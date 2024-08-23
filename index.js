@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost:27017/');
 // Define User schema and model
 const userSchema = new mongoose.Schema({
     username: String,
-    password: String,
+    password: {type: String, minlength:6},
     hiscore: { type: Number, default: 0 }
 });
 const User = mongoose.model('User', userSchema);
@@ -24,7 +24,6 @@ app.use(express.static('templates'))
 
 // Routes
 app.get('/', (req, res) => {
-    console.log(__dirname)
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -56,7 +55,7 @@ app.post('/login', async (req, res) => {
 //Signup
 app.post('/signup', async (req, res) => {
     const { username, password } = req.body;
-
+    
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ username: username });
@@ -65,12 +64,15 @@ app.post('/signup', async (req, res) => {
         }
 
         // Create a new user
+        if(password.length < 5) {
+            return res.send('Password must be at least 5 characters long');
+        }
+
         const hash = await bcrypt.hash(password, 10)
         const newUser = new User({
             username,
             password: hash
         });
-        console.log(newUser);
         await newUser.save()
 
         // Successful signup
@@ -104,7 +106,7 @@ app.get('/snake-game/get-data', async (req, res) => {
         res.status(200).json(doc);
     }
     catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
