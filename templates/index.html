@@ -15,6 +15,25 @@
 
 <body>
     <div class="body">
+        <div id="pauseScreen" class="hidden">
+            <h2>Game Paused</h2>
+            <button id="resumeBtn">Resume Game</button>
+        </div>
+
+        <div id="gameOverScreen" class="hidden">
+            <h2>Game Over</h2>
+            <p id="finalScore">Final Score: 0</p>
+            <button id="restartBtn">Restart Game</button>
+            <button id="showLeadBtn">Leaderboard</button>
+        </div>
+
+        <div id="stats" class="hidden">
+            <button id="closeLeaderboard" class="close-btn">Close</button>
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList">
+            </ul>
+        </div>
+        
         <div class="details">
             <div id="scoreBox">Score: 0</div>
             <div id="hiscoreBox">Hi Score: 0</div>
